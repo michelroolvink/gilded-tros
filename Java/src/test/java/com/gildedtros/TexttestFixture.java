@@ -8,8 +8,8 @@ public class TexttestFixture {
                 new Item("Ring of Cleansening Code", 10, 20),
                 new Item("Good Wine", 2, 0),
                 new Item("Elixir of the SOLID", 5, 7),
-                new Item("B-DAWG Keychain", 0, 80),
-                new Item("B-DAWG Keychain", -1, 80),
+                new Item("B-DAWG Keychain", 0, 50),
+                new Item("B-DAWG Keychain", -1, 50),
                 new Item("Backstage passes for Re:Factor", 15, 20),
                 new Item("Backstage passes for Re:Factor", 10, 49),
                 new Item("Backstage passes for HAXX", 5, 49),
@@ -20,7 +20,7 @@ public class TexttestFixture {
 
         GildedTros app = new GildedTros(items);
 
-        int days = 2;
+        int days = 5;
         if (args.length > 0) {
             days = Integer.parseInt(args[0]) + 1;
         }

@@ -1,63 +1,36 @@
 package com.gildedtros;
 
-class GildedTros {
-    Item[] items;
+import lombok.Getter;
 
-    public GildedTros(Item[] items) {
+@Getter
+class GildedTros {
+    private final Item[] items;
+
+    public GildedTros(final Item[] items) {
         this.items = items;
     }
 
     public void updateQuality() {
-        for (int i = 0; i < items.length; i++) {
-            if (!items[i].name.equals("Good Wine")
-                    && !items[i].name.equals("Backstage passes for Re:Factor")
-                    && !items[i].name.equals("Backstage passes for HAXX"))
-            {
-                if (items[i].quality > 0) {
-                    if (!items[i].name.equals("B-DAWG Keychain")) {
-                        items[i].quality = items[i].quality - 1;
-                    }
-                }
-            } else {
-                if (items[i].quality < 50) {
-                    items[i].quality = items[i].quality + 1;
-
-                    if (items[i].name.equals("Backstage passes for Re:Factor") || items[i].name.equals("Backstage passes for HAXX") ) {
-                        if (items[i].sellIn < 11) {
-                            if (items[i].quality < 50) {
-                                items[i].quality = items[i].quality + 1;
-                            }
-                        }
-
-                        if (items[i].sellIn < 6) {
-                            if (items[i].quality < 50) {
-                                items[i].quality = items[i].quality + 1;
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (!items[i].name.equals("B-DAWG Keychain")) {
-                items[i].sellIn = items[i].sellIn - 1;
-            }
-
-            if (items[i].sellIn < 0) {
-                if (!items[i].name.equals("Good Wine")) {
-                    if (!items[i].name.equals("Backstage passes for Re:Factor") && !items[i].name.equals("Backstage passes for HAXX")) {
-                        if (items[i].quality > 0) {
-                            if (!items[i].name.equals("B-DAWG Keychain")) {
-                                items[i].quality = items[i].quality - 1;
-                            }
-                        }
+        for (Item item : this.items) {
+            switch (item.name) {
+                case "Good Wine" -> item.incQuality();
+                case "Backstage passes for Re:Factor", "Backstage passes for HAXX" -> {
+                    if (item.sellIn > 0 && item.sellIn < 6) {
+                        item.incQuality(3);
+                    } else if (item.sellIn > 0 && item.sellIn < 11) {
+                        item.incQuality(2);
+                    }  else if (item.sellIn > 0) {
+                        item.incQuality();
                     } else {
-                        items[i].quality = items[i].quality - items[i].quality;
-                    }
-                } else {
-                    if (items[i].quality < 50) {
-                        items[i].quality = items[i].quality + 1;
+                        item.quality = 0;
                     }
                 }
+                case "B-DAWG Keychain" -> { } //Do Nothing
+                default -> item.decQuality();
+            }
+
+            if (!item.name.equals("B-DAWG Keychain")) {
+                item.decSellIn();
             }
         }
     }
